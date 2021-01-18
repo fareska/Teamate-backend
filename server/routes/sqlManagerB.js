@@ -1,0 +1,84 @@
+const dotenv = require('dotenv').config()
+const Sequelize = require('sequelize')
+
+const sequelize = new Sequelize(process.env.SQL_DB_URI)
+
+sequelize
+    .authenticate()
+    .then(() => {
+        console.log('Connection has been established successfully.');
+    })
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+    })
+
+
+async function isExistS(table, cName, value) {
+    let query = `SELECT id FROM ${table} WHERE ${cName} = '${value}'`
+    let results = await sequelize.query(query)
+    const response = results[0][0] ? results[0][0].id : 'newItem'
+    return response
+}
+
+const addValueS = async function (table, cName, value) {
+    let check = await isExistS(table, cName, value)
+    if (check === 'newItem') {
+        let query = `INSERT INTO ${table} VALUES (null, '${value}')`
+        let result = await sequelize.query(query)
+        return result
+    }
+    return check
+}
+
+async function addEvent(event) {
+    const { sport, frequency, date, time, people_num, city, country, description, active } = event
+
+    const checkCity = await addValueS('city', 'city', city)
+    const checkCountry = await addValueS('country', 'country', country)
+    const checkFrequency = await addValueS('frequency', 'frequency', frequency)
+    const checkSport = await addValueS('sport', 'sport', sport)
+
+    sequelize.query(`INSERT INTO post 
+    VALUES (null, ${date}, ${time}, ${people_num}, '${description}', ${active}, ${checkCity}, ${checkCountry}, ${checkFrequency}, ${checkSport})`)
+    .then((res)=>console.log(res))
+}
+
+const post = {
+    sport: "Football",
+    frequency: "weekly",
+    date: 1611001784558,
+    time: 1611001784558,
+    people_num: 3,
+    city: "Taybe",
+    country: "Israel",
+    description: "Tel-Aviv stadium",
+    active: true
+}
+
+sequelize.query(`SELECT country, city, frequency, sport, p.id, p.time, p.people_num, p.description, p.date, p.active
+FROM    post AS p, country AS co, city AS c, frequency AS f, sport AS sp
+WHERE   p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id`).then((res)=>console.log(res[0][0]))
+
+// console.log(addValueS('country', 'country', 'BananaLand'))
+// addValueS('country', 'country', 'BananaLand')
+
+// addEvent(post)
+// const addUser = async (client) => {
+//     // let emailType = client.emailType !== null ? await findByID('email_type', 'email_type', client.emailType) : null
+//     // let owner = await findByID('owner', 'owner', client.owner)
+//     // let country = await findByID('country', 'country', client.country)
+//     // let date = new Date (client.firstContact).toLocaleDateString()
+//     // let nameSplit = client.name.split(' ')
+
+//     // let query =`INSERT INTO client
+//     // VALUES (null, '${nameSplit[1]}', '${nameSplit[0]}', '${client.email}', ${client.sold}, '${date}', ${emailType}, ${owner}, ${country})`
+//     // let result = await sequelize.query(query)
+//     // return result[0]
+// }
+//         let query =`INSERT INTO ${table} VALUES (null, '${type}')`
+//         let result = await sequelize.query(query)
+//         return result
+
+// sequelize.query(`
+// SHOW TABLES
+// `).then((res)=>console.log(res))
