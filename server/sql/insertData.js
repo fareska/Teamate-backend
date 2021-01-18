@@ -16,25 +16,21 @@ let countries = data.map(d => d.country)
 let city = data.map(d => d.city)
 // city = city.filter((elem, index, self) => index === self.indexOf(elem))
 
-const addValue = async function (table, type) {
-    let check = await findByID(table, table, type)
-    console.log(check);
+const addValue = async function (table, name, type) {
+    let check = await findByID(table, name, type)
     if(check === 'undefined'){
         let query =`INSERT INTO ${table} VALUES (null, '${type}')`
         let result = await sequelize.query(query)
-        return result[0]
+        return result
     }
 }
 const findByID = async (table, name, value) => {
     let query = `SELECT id FROM ${table} WHERE ${name} = "${value}"`
     let results = await sequelize.query(query)
-    console.log(results[0][0])
-    console.log(typeof(results[0][0]))
-    if(results[0][0]){
-        console.log('if(results[0][0])')        
+    if(!results[0][0]){      
         return 'undefined' 
     }
-    else results[0].id
+    return 'ok'
 }
 
 const addUser = async (client) => {
@@ -50,7 +46,7 @@ const addUser = async (client) => {
     // return result[0]
 }
 
-countries.forEach(c => addValue('country', c))
+// countries.forEach(c => addValue('koko', 'country', c))
 // countries.forEach(c => console.log(c))
 // countries[0]
 // addValue('country', countries[0])
