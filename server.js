@@ -28,6 +28,7 @@ sequelize
         console.error('Unable to connect to the database:', err);
     })
 
+// sequelize.query(`SELECT * from sport`).then((res) => console.log(res[0]))
 
 
 app.use('/', api)
