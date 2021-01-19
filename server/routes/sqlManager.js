@@ -64,6 +64,12 @@ class SqlManager {
         }
     }
 
+    async getPassword(userId){
+        let results = await this.sequelize.query(`SELECT password FROM user WHERE id=${userId}`)
+        const response = results[0][0] && results[0][0].password // null // 'doseNotMatch'
+        return response
+    }
+
     async getUserData(userId){
         let userQuery = `SELECT first, last, email, city, country, birthdate, mobile, image, gender, active, date
         FROM user AS u, city AS c, country AS co
@@ -79,6 +85,11 @@ class SqlManager {
         }
         sport.forEach(s => res.sport.push(s.sport))
         return res
+    }
+
+    async userToPost(userId, postId){
+        let result = await this.sequelize.query(`INSERT INTO user_post VALUES(null, ${userId}, ${postId}) `)
+    
     }
 }
 

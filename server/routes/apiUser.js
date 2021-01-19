@@ -32,4 +32,38 @@ router.get('/user/:id',async function(req, res){
     res.send(userData)
 })
 
+router.post('/user/emailPass',async function(req,res){
+    const {email, password} = req.body
+    
+    let userId = await sqlManager.isExistS('user', 'email', email)
+    if(userId !== 'newItem'){
+        let userPassword = await sqlManager.getPassword(userId) 
+        let check = userPassword == password ? true : res.send('Password dose not match')
+        res.send(check)
+    }
+    else{
+        res.send('Email dose not exist')
+    }
+    //receives object with user id, email, passwords  
+})
+
+router.put('/user/friends', function(req, res){
+    //receives object of friends and update accordingly
+})
+
+router.put('/user/profileData', function(req,res){
+    
+    //receives object with user id, property to update and new value
+    // first/last/city/country/birthdate/bio
+})
+
+
+router.put('/user/friends', function(req,res){
+    //receives object with user id and sports  
+})
+
+
+router.get('/insert/sports', function(req, res){
+})
+
 module.exports = router

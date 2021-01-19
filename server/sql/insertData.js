@@ -57,7 +57,7 @@ const testUser =async function () {
 
 // testUser()
 
-// sequelize.query(`SHOW COLUMNS FROM user`).then((res)=>console.log(res[0]))
+// sequelize.query(`SHOW COLUMNS FROM post_parti`).then((res)=>console.log(res[0]))
 // sequelize.query(`SELECT * FROM user`).then((res)=>console.log(res[0]))
 // sequelize.query(`ALTER TABLE user ADD birthdate BIGINT`).then((res)=>console.log(res[0]))
 
@@ -73,3 +73,29 @@ const testUser =async function () {
 //     FOREIGN KEY (u_id) REFERENCES user(id),
 //     FOREIGN KEY (s_id) REFERENCES sport(id)
 // )`).then((res)=> console.log(res))
+
+// sequelize.query(`CREATE TABLE user_post(
+//     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+//     u_id INT,
+//     p_id INT,
+//     FOREIGN KEY (u_id) REFERENCES user(id),
+//     FOREIGN KEY (p_id) REFERENCES post(id)
+// )`).then((res)=> console.log(res))
+
+// sequelize.query(`CREATE TABLE post_parti(
+//     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+//     po_id INT,
+//     pa_id INT,
+//     FOREIGN KEY (po_id) REFERENCES post(id),
+//     FOREIGN KEY (pa_id) REFERENCES user(id)
+// )`).then((res)=> console.log(res))
+
+// sequelize.query(`DROP TABLE user_post
+// `)
+
+
+//user asked to join ---> postId, makerId, userID
+//table user_requestId
+// 
+
+
