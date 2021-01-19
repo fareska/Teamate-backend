@@ -120,14 +120,5 @@ module.exports = SqlManager
 //     return response
 // }//return num or 'newItem'
 
-// const addValueS = async function (table, cName, value) {
-//     console.log(table)
-//     let check = await isExistS(table, cName, value)
-//     console.log('addValue');
-//     if (check === 'newItem') {
-//         let query = `INSERT INTO ${table} VALUES (null, '${value}')`
-//         let result = await sequelize.query(query)
-//         return result //return id 
-//     }
-//     else return check
-// }
+// module.exports = router
+
