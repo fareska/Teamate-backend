@@ -6,6 +6,8 @@ const api = require('./server/routes/api')
 const Sequelize = require('sequelize')
 
 const sequelize = new Sequelize(process.env.SQL_DB_URI)
+const sequelize = new Sequelize('mysql://root:@localhost/sql_teamate')
+
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
