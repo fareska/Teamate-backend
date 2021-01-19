@@ -3,28 +3,34 @@ const router = express.Router()
 const SQLManager = require('./sqlManagerB')
 const sqlManager = new SQLManager()
 
+router.get('/insert/sports', function(req, res){
 
-router.get('/user/:id', function (req, res) {
+})
+
+router.get('/user/:id', function(req, res){
     //receives id return user 
 })
 
-router.put('user/friends', function (req, res) {
+router.put('/user/friends', function(req, res){
     //receives object of friends and update accordingly
 })
 
-router.put('user/profileData', function (req, res) {
+router.put('/user/profileData', function(req,res){
+
     //receives object with user id, property to update and new value
     // first/last/city/country/birthdate/bio
 })
 
-router.put('user/friends', function (req, res) {
+
+router.put('/user/friends', function(req,res){
     //receives object with user id and sports  
 })
 
-router.put('user/emailPass', function (req, res) {
+router.put('/user/emailPass', function(req,res){
     //receives object with user id, email, passwords  
 
 })
+
 
 router.delete('/post/:id', async function (req, res) {
     //receives post id and delete it
@@ -42,6 +48,7 @@ router.put('/post/deactive', async function (req, res) {
 })
 
 router.put('/post', async function (req, res) {
+
     //receives object with post id, property to update and new value
     // sport/recursion/description/time/date/peopleNum/city/country 
     const result = await sqlManager.updateEvent(req.body)
@@ -58,6 +65,7 @@ router.get('/posts/:id?', async function (req, res) {
         const result = await sqlManager.getEvents()
         res.status(200).send(result)
     }
+
 })
 
 router.post('/post', async function(req, res){

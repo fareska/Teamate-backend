@@ -3,6 +3,7 @@ const dotenv = require('dotenv').config()
 const app = express()
 
 const api = require('./server/routes/api')
+const apiUser = require('./server/routes/apiUser')
 const Sequelize = require('sequelize')
 
 const sequelize = new Sequelize(process.env.SQL_DB_URI)
@@ -32,6 +33,7 @@ sequelize
 
 
 app.use('/', api)
+app.use('/user', apiUser)
 
 const port = process.env.PORT || 3200
 app.listen(port, () => {
