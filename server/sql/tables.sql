@@ -1,7 +1,12 @@
 USE sql_teamate;
 
-ALTER TABLE city 
-DROP FOREIGN KEY country_id;
+CREATE TABLE user_sport(
+    u_id INT,
+    s_id INT,
+
+    FOREIGN KEY (u_id) REFERENCES user(id),
+    FOREIGN KEY (s_id) REFERENCES sport(id)
+);
 
 
 
