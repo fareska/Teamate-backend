@@ -28,8 +28,8 @@ router.post('/user', async function (req, res) {
 
 router.get('/user/:id', async function (req, res) {
     let userData = await sqlManager.getUserData(req.params.id)
-    userData.date=`${userData.date}`
-    userData.birthdate=`${userData.birthdate}`
+    userData.user.date=`${userData.user.date}`
+    userData.user.birthdate=`${userData.user.birthdate}`
     res.send(userData)
 })
 
@@ -42,8 +42,8 @@ router.post('/user/emailPass', async function (req, res) {
         let check = userPassword == password ? true : res.send('Password dose not match')
         let result = check && await sqlManager.getUserData(userId)
         result.user.id = userId
-        result.user.date=`${result.date}`
-        result.user.birthdate=`${result.birthdate}`
+        result.user.date=`${result.user.date}`
+        result.user.birthdate=`${result.user.birthdate}`
         res.send(result)
     }
     else {
