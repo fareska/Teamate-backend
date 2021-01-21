@@ -60,8 +60,8 @@ router.post('/post/participant', async function (req, res) {
     res.status(200).send(result)
 })
 
-router.get('/post/participants', async function(req, res){
-    
-})
+// router.get('/post/participants', async function(req, res){
+    //don't need this one as long the posts route returns the partis  
+// })
 
 module.exports = router

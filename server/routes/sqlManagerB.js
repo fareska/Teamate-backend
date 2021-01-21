@@ -49,15 +49,23 @@ class SQLManager {
             return "Event has been added successfully!"
         else "Sorry something went wrong, try again later!"
     }
-
+    
     async getEvent(id) {
-        const hold = await this.sequelize.query(`
-        SELECT user_id, country, city, frequency, sport, p.id, p.time, p.people_num, p.description, p.date, p.active
-        FROM post AS p, country AS co, city AS c, frequency AS f, sport AS sp
-        WHERE p.id=${id} AND p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id;`)
+        let eventQuery = `SELECT p.id, p.date, p.time, p.people_num, p.description, p.active, c.city, co.country, f.frequency, sp.sport,user_id, u.first, u.last, u.image, p.address, p.lat, p.lon
+        FROM post AS p, country AS co, city AS c, frequency AS f, sport AS sp, user AS u
+        WHERE p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id AND p.id=${id} AND p.user_id = u.id `
+        
+        let partisQuery = `SELECT u.first, u.last, u.image, pa_id, po_id
+        FROM post_parti, user AS u
+        WHERE  po_id = ${id} AND pa_id = u.id`
 
-        if (hold)
-            return hold[0][0]
+        let eventRes = await this.sequelize.query(eventQuery)
+        let partisRes = await this.sequelize.query(partisQuery)
+
+        eventRes[0][0].partis = partisRes[0] 
+
+        if (eventRes[0][0])
+            return eventRes[0][0]
         return false
     }
 
