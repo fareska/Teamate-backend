@@ -1,6 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv').config()
 const app = express()
+const cors = require('cors')
 
 const api = require('./server/routes/api')
 const apiUser = require('./server/routes/apiUser')
@@ -10,8 +11,8 @@ const sequelize = new Sequelize(process.env.SQL_DB_URI)
 
 
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-
+app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 // app.use(function (req, res, next) {
 //     res.header('Access-Control-Allow-Origin', '*')
 //     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
