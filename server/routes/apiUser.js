@@ -40,6 +40,7 @@ router.post('/user/emailPass', async function (req, res) {
         let userPassword = await sqlManager.getPassword(userId)
         let check = userPassword == password ? true : res.send('Password dose not match')
         let result = check && await sqlManager.getUserData(userId)
+        result.user.id = userId
         res.send(result)
     }
     else {
