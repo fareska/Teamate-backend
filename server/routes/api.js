@@ -53,15 +53,15 @@ router.post('/post', async function (req, res) {
     res.status(200).send(result)
 })
 
-router.post('/post/addParticipant', async function (req, res) {
+router.post('/post/participant', async function (req, res) {
     //add person to event //should receive userId (participant) and event Id
     const {eventId, userId} = req.body
     const result = await sqlManager.userToEvent(eventId, userId)
     res.status(200).send(result)
 })
 
-router.get('/post/participants', async function(req, res){
-    
-})
+// router.get('/post/participants', async function(req, res){
+    //don't need this one as long the posts route returns the partis  
+// })
 
 module.exports = router

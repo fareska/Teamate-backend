@@ -32,7 +32,7 @@ class SQLManager {
     }
 
     async addEvent(event) {
-        const { user_id, sport, frequency, date, time, people_num, city, country, description } = event
+        const { user_id, sport, frequency, date, time, people_num, city, country, description, lon, lat, address } = event
 
         const checkCity = await this.addValueS('city', 'city', city)
         const checkCountry = await this.addValueS('country', 'country', country)
@@ -41,21 +41,31 @@ class SQLManager {
         const active = true
 
         const hold = await this.sequelize.query(`INSERT INTO post 
-        VALUES (null, ${date}, ${time}, ${people_num}, '${description}', ${active}, ${checkCity}, ${checkCountry}, ${checkFrequency}, ${checkSport}, ${user_id});`)
+        VALUES (null, ${date}, ${time}, ${people_num}, '${description}',
+        ${active}, ${checkCity}, ${checkCountry}, ${checkFrequency},
+        ${checkSport}, ${user_id}, '${address}', ${lat}, ${lon} )`)
 
         if (hold)
             return "Event has been added successfully!"
         else "Sorry something went wrong, try again later!"
     }
-
+    
     async getEvent(id) {
-        const hold = await this.sequelize.query(`
-        SELECT country, city, frequency, sport, p.id, p.time, p.people_num, p.description, p.date, p.active
-        FROM post AS p, country AS co, city AS c, frequency AS f, sport AS sp
-        WHERE p.id=${id} AND p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id;`)
+        let eventQuery = `SELECT p.id, p.date, p.time, p.people_num, p.description, p.active, c.city, co.country, f.frequency, sp.sport,user_id, u.first, u.last, u.image, p.address, p.lat, p.lon
+        FROM post AS p, country AS co, city AS c, frequency AS f, sport AS sp, user AS u
+        WHERE p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id AND p.id=${id} AND p.user_id = u.id `
+        
+        let partisQuery = `SELECT u.first, u.last, u.image, pa_id, po_id
+        FROM post_parti, user AS u
+        WHERE  po_id = ${id} AND pa_id = u.id`
 
-        if (hold)
-            return hold[0][0]
+        let eventRes = await this.sequelize.query(eventQuery)
+        let partisRes = await this.sequelize.query(partisQuery)
+
+        eventRes[0][0].partis = partisRes[0] 
+
+        if (eventRes[0][0])
+            return eventRes[0][0]
         return false
     }
 
@@ -70,14 +80,35 @@ class SQLManager {
         return false
     }
 
-    async getEvents() {
-        const hold = await this.sequelize.query(`
-        SELECT country, city, frequency, sport, p.id, p.time, p.people_num, p.description, p.date, p.active
-        FROM post AS p, country AS co, city AS c, frequency AS f, sport AS sp
-        WHERE p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id;`)
+    mergePartisToPosts(eventsArr, partisArr){
+        let newArr = []
+        for (let e of eventsArr){
+            e.partis = []
 
-        if (hold)
-            return hold[0]
+            for (let p of partisArr){
+                p.pa_id === e.id && e.partis.push(p) 
+            }
+            newArr.push(e)
+        }
+        return newArr
+    }    
+
+    async getEvents() {
+        let eventsQuery = `SELECT p.id, p.date, p.time, p.people_num, p.description, p.active, c.city, co.country, f.frequency, sp.sport,user_id, u.first, u.last, u.image, p.address, p.lat, p.lon
+        FROM post AS p, country AS co, city AS c, frequency AS f, sport AS sp, user AS u
+        WHERE p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id AND p.user_id = u.id `
+        
+        let partisQuery = `SELECT pa_id, po_id, u.first, u.last, u.image
+        FROM  post_parti AS pp,  user AS u, post as p
+        WHERE p.id = pp.po_id AND pp.pa_id = u.id`
+
+        const eventsRes = await this.sequelize.query(eventsQuery)
+        const partisRes = await this.sequelize.query(partisQuery)
+
+        const result = this.mergePartisToPosts(eventsRes[0], partisRes[0])
+
+        if (result)
+            return result
         return false
     }
 
