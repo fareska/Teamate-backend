@@ -30,7 +30,10 @@ sequelize
         console.error('Unable to connect to the database:', err);
     })
 
-// sequelize.query(`SELECT * from sport`).then((res) => console.log(res[0]))
+// sequelize.query(`
+// ALTER TABLE post ADD user_id INT, ADD CONSTRAINT FOREIGN KEY (user_id) REFERENCES user(id);`).then((res) => console.log(res[0]))
+// sequelize.query(`
+// SHOW COLUMNS FROM post;`).then((res) => console.log(res[0]))
 
 
 app.use('/', api)

@@ -32,15 +32,16 @@ class SQLManager {
     }
 
     async addEvent(event) {
-        const { sport, frequency, date, time, people_num, city, country, description, active } = event
+        const { user_id, sport, frequency, date, time, people_num, city, country, description } = event
 
         const checkCity = await this.addValueS('city', 'city', city)
         const checkCountry = await this.addValueS('country', 'country', country)
         const checkFrequency = await this.addValueS('frequency', 'frequency', frequency)
         const checkSport = await this.addValueS('sport', 'sport', sport)
+        const active = true
 
-        const hold = this.sequelize.query(`INSERT INTO post 
-        VALUES (null, ${date}, ${time}, ${people_num}, '${description}', ${active}, ${checkCity}, ${checkCountry}, ${checkFrequency}, ${checkSport});`)
+        const hold = await this.sequelize.query(`INSERT INTO post 
+        VALUES (null, ${date}, ${time}, ${people_num}, '${description}', ${active}, ${checkCity}, ${checkCountry}, ${checkFrequency}, ${checkSport}, ${user_id});`)
 
         if (hold)
             return "Event has been added successfully!"
@@ -55,6 +56,17 @@ class SQLManager {
 
         if (hold)
             return hold[0][0]
+        return false
+    }
+
+    async getEventsByUser(userId) {
+        const hold = await this.sequelize.query(`
+        SELECT country, city, frequency, sport, p.id, p.time, p.people_num, p.description, p.date, p.active
+        FROM post AS p, country AS co, city AS c, frequency AS f, sport AS sp
+        WHERE p.user_id=${userId} AND p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id;`)
+
+        if (hold)
+            return hold[0]
         return false
     }
 
@@ -108,6 +120,22 @@ class SQLManager {
         else "Sorry something went wrong, try again later!"
 
     }
+
+    async userToEvent(userId, postId) {
+        const hold = await this.sequelize.query(`INSERT INTO post_parti VALUES(null, ${userId}, ${postId})`)
+
+        if (hold)
+            return "Person has been added to the event successfully!"
+        else "Sorry something went wrong, try again later!"
+    }
+
+    // async eventParticipants(userId, postId) {
+    //     const hold = await this.sequelize.query(`INSERT INTO post_parti VALUES(null, ${userId}, ${postId})`)
+
+    //     if (hold)
+    //         return "Person has been added to the event successfully!"
+    //     else "Sorry something went wrong, try again later!"
+    // }
 }
 
 module.exports = SQLManager
