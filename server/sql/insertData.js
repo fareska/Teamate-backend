@@ -54,8 +54,9 @@ const testUser = async function () {
 /////////////////////////////
 
 
-// sequelize.query(`SHOW COLUMNS FROM user_user`).then((res)=>console.log(res[0]))
+sequelize.query(`SHOW COLUMNS FROM user`).then((res)=>console.log(res[0]))
 // sequelize.query(`SELECT * FROM user_user`).then((res)=>console.log(res[0]))
+// sequelize.query(`SELECT * FROM user`).then((res)=>console.log(res[0]))
 // sequelize.query(`ALTER TABLE user ADD birthdate BIGINT`).then((res)=>console.log(res[0]))
 
 ///friend req (the res shows all the users which got friend req from the main user)--show me the users i sent them follow/add friend
@@ -72,7 +73,7 @@ const testUser = async function () {
 //     WHERE uu.su_id = 21 AND uu.mu_id = u.id
 // `).then((res)=>console.log(res[0]))
 
-sequelize.query(`SELECT * FROM country`).then(([res]) => [res].forEach(console.log([res][0])))
+// sequelize.query(`SELECT * FROM country`).then(([res]) => [res].forEach(console.log([res][0])))
 
 
 
@@ -90,6 +91,21 @@ sequelize.query(`SELECT * FROM country`).then(([res]) => [res].forEach(console.l
 //     FOREIGN KEY (u_id) REFERENCES user(id),
 //     FOREIGN KEY (s_id) REFERENCES sport(id)
 // )`).then((res)=> console.log(res))
+
+// sequelize.query(`
+// ALTER TABLE user
+// MODIFY COLUMN date double
+// `).then((res) => console.log(res))
+
+// sequelize.query(`
+// ALTER TABLE user
+// MODIFY COLUMN birthdate double
+// `).then((res) => console.log(res))
+
+// sequelize.query(`
+// ALTER TABLE user
+// ADD bio VARCHAR(300)
+// `).then((res) => console.log(res))
 
 
 

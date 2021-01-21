@@ -47,7 +47,7 @@ class SqlManager {
         try {
             const [res, meta] = await this.sequelize.query(`INSERT INTO user VALUES 
             (null, '${last}', '${first}', '${email}', '${password}' , ${date}, '${mobile}',  ${image},
-            ${gender}, ${active}, ${city_id},  ${country_id},${birthDate})
+            ${gender}, ${active}, ${city_id},  ${country_id},${birthDate}, null)
             `)
             return res[0]
         } catch (err) {
