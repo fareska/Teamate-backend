@@ -129,13 +129,6 @@ class SQLManager {
         else "Sorry something went wrong, try again later!"
     }
 
-    // async eventParticipants(userId, postId) {
-    //     const hold = await this.sequelize.query(`INSERT INTO post_parti VALUES(null, ${userId}, ${postId})`)
-
-    //     if (hold)
-    //         return "Person has been added to the event successfully!"
-    //     else "Sorry something went wrong, try again later!"
-    // }
 }
 
 module.exports = SQLManager
@@ -152,27 +145,3 @@ module.exports = SQLManager
 //     active: true
 // }
 
-
-// console.log(addValueS('country', 'country', 'BananaLand'))
-// addValueS('country', 'country', 'BananaLand')
-
-// addEvent(post)
-// const addUser = async (client) => {
-//     // let emailType = client.emailType !== null ? await findByID('email_type', 'email_type', client.emailType) : null
-//     // let owner = await findByID('owner', 'owner', client.owner)
-//     // let country = await findByID('country', 'country', client.country)
-//     // let date = new Date (client.firstContact).toLocaleDateString()
-//     // let nameSplit = client.name.split(' ')
-
-//     // let query =`INSERT INTO client
-//     // VALUES (null, '${nameSplit[1]}', '${nameSplit[0]}', '${client.email}', ${client.sold}, '${date}', ${emailType}, ${owner}, ${country})`
-//     // let result = await sequelize.query(query)
-//     // return result[0]
-// }
-//         let query =`INSERT INTO ${table} VALUES (null, '${type}')`
-//         let result = await sequelize.query(query)
-//         return result
-
-// sequelize.query(`
-// SHOW TABLES
-// `).then((res)=>console.log(res))

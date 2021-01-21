@@ -38,8 +38,8 @@ router.get('/posts/:id?', async function (req, res) {
 
 })
 
-router.get('/postsByUser/:id', async function (req, res){
-    //posts by user id
+router.get('/posts/user/:id', async function (req, res){
+    //posts by user id  // get all the events of some user
     const {userId} = req.params
     const result = await sqlManager.getEventsByUser(userId)
     res.status(200).send(result)
@@ -47,17 +47,21 @@ router.get('/postsByUser/:id', async function (req, res){
 
 router.post('/post', async function (req, res) {
     //add new event to DB
-    const {userId} = req.body
-    const postId = await sqlManager.addEvent(req.body)
-    const result = await sqlManager.eventToUser(userId, postId)
+    // const {userId} = req.body
+    const result = await sqlManager.addEvent(req.body)
+    // const result = await sqlManager.eventToUser(userId, postId)
     res.status(200).send(result)
 })
 
-router.post('/userToEvent', async function (req, res) {
-    //add person to event
+router.post('/post/addParticipant', async function (req, res) {
+    //add person to event //should receive userId (participant) and event Id
     const {eventId, userId} = req.body
     const result = await sqlManager.userToEvent(eventId, userId)
     res.status(200).send(result)
+})
+
+router.get('/post/participants', async function(req, res){
+    
 })
 
 module.exports = router
