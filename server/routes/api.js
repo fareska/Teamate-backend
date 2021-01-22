@@ -55,8 +55,8 @@ router.post('/post', async function (req, res) {
 
 router.post('/post/participant', async function (req, res) {
     //add person to event //should receive userId (participant) and event Id
-    const {eventId, userId} = req.body
-    const result = await sqlManager.userToEvent(eventId, userId)
+    const {userId, postId} = req.body
+    const result = await sqlManager.userToEvent(userId, postId)
     res.status(200).send(result)
 })
 
