@@ -62,7 +62,7 @@ class SQLManager {
         let eventRes = await this.sequelize.query(eventQuery)
         let partisRes = await this.sequelize.query(partisQuery)
         let commentsRes =  await this.getComments(id)
-
+        console.log(eventRes); 
         eventRes[0][0].partis = partisRes[0] 
         eventRes[0][0].comments = commentsRes[0]
 
@@ -83,12 +83,13 @@ class SQLManager {
     }
 
     mergePartisToPosts(eventsArr, partisArr){
+        console.log(eventsArr, partisArr);
         let newArr = []
         for (let e of eventsArr){
             e.partis = []
 
             for (let p of partisArr){
-                p.pa_id === e.id && e.partis.push(p) 
+                p.po_id === e.id && e.partis.push(p) 
             }
             newArr.push(e)
         }
@@ -156,7 +157,7 @@ class SQLManager {
     }
 
     async userToEvent(userId, postId) {
-        const hold = await this.sequelize.query(`INSERT INTO post_parti VALUES(null, ${userId}, ${postId})`)
+        const hold = await this.sequelize.query(`INSERT INTO post_parti VALUES(null, ${postId}, ${userId})`)
 
         if (hold)
             return "Person has been added to the event successfully!"
