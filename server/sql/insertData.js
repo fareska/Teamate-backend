@@ -54,9 +54,9 @@ const testUser = async function () {
 /////////////////////////////
 
 
-// sequelize.query(`SHOW COLUMNS FROM comment`).then((res)=>console.log(res[0]))
+// sequelize.query(`SHOW COLUMNS FROM post`).then((res)=>console.log(res[0]))
 // sequelize.query(`SELECT * FROM user WHERE id= 1`).then((res)=>console.log(res[0]))
-sequelize.query(`SELECT * FROM comment WHERE p_id = 6`).then((res)=>console.log(res[0]))
+// sequelize.query(`SELECT * FROM comment WHERE p_id = 6`).then((res)=>console.log(res[0]))
 // sequelize.query(`ALTER TABLE user ADD birthdate BIGINT`).then((res)=>console.log(res[0]))
 
 ///friend req (the res shows all the users which got friend req from the main user)--show me the users i sent them follow/add friend
@@ -101,6 +101,16 @@ sequelize.query(`SELECT * FROM comment WHERE p_id = 6`).then((res)=>console.log(
 //     FOREIGN KEY (p_id) REFERENCES post(id)
 // )`).then((res)=> console.log(res))
 
+
+// sequelize.query(`
+// ALTER TABLE post CHANGE lon longitude double
+
+// `).then((res) => console.log(res))
+
+// sequelize.query(`
+// ALTER TABLE post CHANGE lat latitude double
+
+// `).then((res) => console.log(res))
 
 // sequelize.query(`
 // ALTER TABLE user

@@ -132,7 +132,7 @@ class SqlManager {
     }
 
     async getUserEvents(userId){
-        let query = `SELECT p.id, date, time, people_num, description, active, address, lat, lon, c.city, co.country, f.frequency ,s.sport   
+        let query = `SELECT p.id, date, time, people_num, description, active, address, latitude, longitude, c.city, co.country, f.frequency ,s.sport   
         FROM  post AS p, sport AS s, city AS c, country AS co, frequency AS f
         WHERE p.user_id = ${userId} AND p.sport_id = s.id AND c.id= p.city_id AND co.id=p.country_id AND f.id=p.frequency_id `
         let arr = []
@@ -142,7 +142,7 @@ class SqlManager {
     }
 
     async getUserPartis(userId){
-        let query = `SELECT user_id, date, time, people_num, description, active, address, lat, lon, c.city, co.country, f.frequency ,s.sport   
+        let query = `SELECT user_id, date, time, people_num, description, active, address, latitude, longitude, c.city, co.country, f.frequency ,s.sport   
         FROM  post_parti AS pp, post AS p, sport AS s, city AS c, country AS co, frequency AS f
         WHERE pp.pa_id = ${userId} AND pp.po_id= p.id AND p.sport_id = s.id AND c.id=p.city_id AND co.id=p.country_id AND f.id=p.frequency_id `
         let arr = []
@@ -184,7 +184,7 @@ class SqlManager {
         return result[0]
     }
 
-    async getAllCountries(table){
+    async getAllColumn(table){
         let result = await this.sequelize.query(`SELECT * FROM ${table}`)
         return result[0]
     }

@@ -51,16 +51,18 @@ router.post('/user/emailPass', async function (req, res) {
     }
 })
 
-router.get('/user/all/:table', async function (req, res) {
+router.get('/user/all/table/:table', async function (req, res) {
     console.log('get all route', req.params.table);
     let result = await sqlManager.getAll(req.params.table)
     console.log(result);
     res.send(result)
 })
-router.get('/user/countries', async function (req, res) {
-    let result = await sqlManager.getAllCountries()
-    console.log(result);
-    res.send(result)
+router.get('/user/all/column/:column', async function (req, res) {
+    let column = req.params.column
+    let result = await sqlManager.getAllColumn(column)
+    let fixed = result.map(r=> column==='sport'? r.sport: r.country )
+    // console.log(res);
+    res.send(fixed)
 })
 
 router.post('/user/addFriend', async function (req, res) {
