@@ -60,6 +60,20 @@ router.post('/post/participant', async function (req, res) {
     res.status(200).send(result)
 })
 
+
+router.post('/post/comment', async function (req, res) {
+    //add comment to event 
+    const {postId, userId, comment } = req.body
+    const result = await sqlManager.addComment(postId, userId, comment)
+    res.status(200).send(result)
+})
+
+router.delete('/post/comment/:id', async function (req, res) {
+    //add comment to event
+    const result = await sqlManager.deleteComment(req.params.id)
+    res.status(200).send(result)
+})
+
 // router.get('/post/participants', async function(req, res){
     //don't need this one as long the posts route returns the partis  
 // })

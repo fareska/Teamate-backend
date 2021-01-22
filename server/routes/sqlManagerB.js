@@ -61,8 +61,10 @@ class SQLManager {
 
         let eventRes = await this.sequelize.query(eventQuery)
         let partisRes = await this.sequelize.query(partisQuery)
+        let commentsRes =  await this.getComments(id)
 
         eventRes[0][0].partis = partisRes[0] 
+        eventRes[0][0].comments = commentsRes[0]
 
         if (eventRes[0][0])
             return eventRes[0][0]
@@ -104,7 +106,7 @@ class SQLManager {
 
         const eventsRes = await this.sequelize.query(eventsQuery)
         const partisRes = await this.sequelize.query(partisQuery)
-
+        
         const result = this.mergePartisToPosts(eventsRes[0], partisRes[0])
 
         if (result)
@@ -157,6 +159,28 @@ class SQLManager {
 
         if (hold)
             return "Person has been added to the event successfully!"
+        else "Sorry something went wrong, try again later!"
+    }
+
+    async getComments(postId){
+        // let result = await this.sequelize.query(`SELECT comment, u_id FROM comment  GROUP BY p_id `)
+        let result = await this.sequelize.query(`SELECT * FROM comment WHERE p_id = ${postId} `)
+
+        if(result){ return result}
+        else return 'something went wrong'
+    }
+
+    async addComment(postId, userId, comment) {
+        const hold = await this.sequelize.query(`INSERT INTO comment VALUES(null, ${userId}, ${postId}, '${comment}')`)
+        if (hold)
+            return "Comment has been saved to the event successfully!"
+        else "Sorry something went wrong, try again later!"
+    }
+
+    async deleteComment(commentId) {
+        const hold = await this.sequelize.query(`DELETE FROM comment WHERE id= ${commentId} `)
+        if (hold)
+            return "Comment has been deleted successfully!"
         else "Sorry something went wrong, try again later!"
     }
 

@@ -179,19 +179,6 @@ class SqlManager {
         else return 'already requested'
     }
 
-    // async getFriends(mainUserId, subUserId){
-    //     let query = `SELECT first, last 
-    //     FROM user AS u, user_user AS uu
-    //     WHERE uu.mu_id=${mainUserId} AND uu.su_id=${subUserId} AND u.id=${subUserId}`
-    //     let result = await this.sequelize.query(query)
-    //     return result
-    // }
-
-    async userToPost(userId, postId) {
-        let result = await this.sequelize.query(`INSERT INTO user_post VALUES(null, ${userId}, ${postId}) `)
-
-    }
-
     async getAll(table){
         let result = await this.sequelize.query(`SELECT * FROM ${table}`)
         return result[0]
