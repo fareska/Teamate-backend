@@ -26,7 +26,7 @@ class SQLManager {
         if (check === 'newItem') {
             let query = `INSERT INTO ${table} VALUES (null, '${value}');`
             let result = await this.sequelize.query(query)
-            return result
+            check = await this.isExistS(table, cName, value)
         }
         return check
     }
