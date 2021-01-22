@@ -10,11 +10,11 @@ router.delete('/post/:id', async function (req, res) {
     res.status(200).send(result)
 })
 
-router.put('/post/deactive', async function (req, res) {
+router.put('/post/deactivate/:id', async function (req, res) {
     //receives object with post id and changes its active value to false 
     //this will delete the post from events page, bul it will still be appear on the user page
-    const { id } = req.body
-    const result = await sqlManager.deactiveEvent(id)
+    // const { id } = req.body
+    const result = await sqlManager.deactivateEvent(req.params.id)
     res.status(200).send(result)
 })
 

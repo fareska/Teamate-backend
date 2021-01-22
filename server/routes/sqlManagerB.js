@@ -114,7 +114,7 @@ class SQLManager {
         return false
     }
 
-    async deactiveEvent(id) {
+    async deactivateEvent(id) {
         const hold = await this.sequelize.query(`
         UPDATE post
         SET active = 0
