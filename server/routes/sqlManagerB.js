@@ -51,7 +51,7 @@ class SQLManager {
     }
     
     async getEvent(id) {
-        let eventQuery = `SELECT p.id, p.date, p.time, p.people_num, p.description, p.active, c.city, co.country, f.frequency, sp.sport,user_id, u.first, u.last, u.image, p.address, p.lat, p.lon
+        let eventQuery = `SELECT p.id, p.date, p.time, p.people_num, p.description, p.active, c.city, co.country, f.frequency, sp.sport,user_id, u.first, u.last, u.image, p.address, p.latitude, p.longitude
         FROM post AS p, country AS co, city AS c, frequency AS f, sport AS sp, user AS u
         WHERE p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id AND p.id=${id} AND p.user_id = u.id `
         
@@ -96,7 +96,7 @@ class SQLManager {
     }    
 
     async getEvents() {
-        let eventsQuery = `SELECT p.id, p.date, p.time, p.people_num, p.description, p.active, c.city, co.country, f.frequency, sp.sport,user_id, u.first, u.last, u.image, p.address, p.lat, p.lon
+        let eventsQuery = `SELECT p.id, p.date, p.time, p.people_num, p.description, p.active, c.city, co.country, f.frequency, sp.sport,user_id, u.first, u.last, u.image, p.address, p.latitude, p.longitude
         FROM post AS p, country AS co, city AS c, frequency AS f, sport AS sp, user AS u
         WHERE p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id AND p.user_id = u.id `
         

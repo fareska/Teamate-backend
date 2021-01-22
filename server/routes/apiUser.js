@@ -57,11 +57,11 @@ router.get('/user/all/table/:table', async function (req, res) {
     console.log(result);
     res.send(result)
 })
+
 router.get('/user/all/column/:column', async function (req, res) {
     let column = req.params.column
     let result = await sqlManager.getAllColumn(column)
-    let fixed = result.map(r=> column==='sport'? r.sport: r.country )
-    // console.log(res);
+    let fixed = result.map(r=> r[column] )
     res.send(fixed)
 })
 
