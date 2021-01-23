@@ -157,11 +157,17 @@ class SQLManager {
     }
 
     async userToEvent(userId, postId) {
-        const hold = await this.sequelize.query(`INSERT INTO post_parti VALUES(null, ${postId}, ${userId})`)
-
-        if (hold)
-            return "Person has been added to the event successfully!"
-        else "Sorry something went wrong, try again later!"
+        let query = `SELECT id FROM post_parti WHERE po_id = ${postId} AND pa_id =${userId}`
+        let isNew = await this.sequelize.query(query)
+        let response = isNew[0][0] ? isNew[0][0].id : 'newItem'
+        
+        if(response === 'newItem'){
+            let hold = await this.sequelize.query(`INSERT INTO post_parti VALUES(null, ${postId}, ${userId})`) 
+            if (hold)
+                return "Person has been added to the event successfully!"
+            else "Sorry something went wrong, try again later!"
+        }
+        else return 'The user already registered as participant to this event'
     }
 
     async getComments(postId){
@@ -179,8 +185,8 @@ class SQLManager {
         else "Sorry something went wrong, try again later!"
     }
 
-    async deleteComment(commentId) {
-        const hold = await this.sequelize.query(`DELETE FROM comment WHERE id= ${commentId} `)
+    async deleteComment(commentId, userId) {
+        const hold = await this.sequelize.query(`DELETE FROM comment WHERE id= ${commentId} AND u_id=${userId} `)
         if (hold)
             return "Comment has been deleted successfully!"
         else "Sorry something went wrong, try again later!"
