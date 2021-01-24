@@ -156,18 +156,53 @@ class SQLManager {
 
     }
 
+    async checkReq(userId, postId){
+        let eventData = await this.getEvent(postId)
+
+        let valid 
+
+        let peopleNum = eventData.people_num
+        let partisNum = eventData.partis.length
+        let eventMaker = eventData.user_id
+      
+        if(eventMaker !== userId){
+            if(peopleNum !== partisNum){
+                valid = true
+            }else valid = 'event is full'
+        } else valid = `you can't assign to event you generated`
+
+        return valid
+    }
+
+    async cancelParticipation(userId, postId){
+         console.log('cancelParticipation');
+         console.log(userId, postId);
+        let query = `DELETE FROM post_parti WHERE po_id = ${postId} AND pa_id = ${userId}`
+        let result = await this.sequelize.query(query)
+        return result
+    }
+
+
+
     async userToEvent(userId, postId) {
-        let query = `SELECT id FROM post_parti WHERE po_id = ${postId} AND pa_id =${userId}`
-        let isNew = await this.sequelize.query(query)
-        let response = isNew[0][0] ? isNew[0][0].id : 'newItem'
         
-        if(response === 'newItem'){
-            let hold = await this.sequelize.query(`INSERT INTO post_parti VALUES(null, ${postId}, ${userId})`) 
-            if (hold)
-                return "Person has been added to the event successfully!"
-            else "Sorry something went wrong, try again later!"
-        }
-        else return 'The user already registered as participant to this event'
+        let validation =  await this.checkReq(userId, postId) 
+
+        if (validation=== true){
+            let query = `SELECT id FROM post_parti WHERE po_id = ${postId} AND pa_id =${userId}`
+            let isNew = await this.sequelize.query(query)
+            let response = isNew[0][0] ? isNew[0][0].id : 'newItem'
+            
+            if(response === 'newItem'){
+                let hold = await this.sequelize.query(`INSERT INTO post_parti VALUES(null, ${postId}, ${userId})`) 
+                if (hold)
+                    return "Person has been added to the event successfully!"
+                else "Sorry something went wrong, try again later!"
+            }
+            else return 'Request not valid, The user already registered as participant to this event'
+
+        } else return validation //'the request is not valid, you either trying to join an event you published or you trying to join a full event '
+
     }
 
     async getComments(postId){

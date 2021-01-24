@@ -60,6 +60,13 @@ router.post('/post/participant', async function (req, res) {
     res.status(200).send(result)
 })
 
+router.delete('/post/delete/participant', async function (req, res) {
+    const {userId, postId} = req.body
+    console.log(userId, postId);
+    const result = await sqlManager.cancelParticipation(userId, postId)
+    res.status(200).send(result)
+})
+
 
 router.post('/post/comment', async function (req, res) {
     //add comment to event 
