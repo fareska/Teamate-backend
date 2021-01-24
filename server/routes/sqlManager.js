@@ -112,16 +112,16 @@ class SqlManager {
         //if the value is 0, then the user(key) received a req from the main user 
         //if the value is 1, then the user(key) sent a req to the main user 
         //if the value is 2, then they are friends 
-        let reqSent = await this.getFriendReq(userId)
-        let reqReceived = await this.getFollowReq(userId)
-        for (let r of reqSent){
+        let reqReceivedFromOtherUSer = await this.getFriendReq(userId)
+        let reqSentToOtherUser = await this.getFollowReq(userId)
+        for (let r of reqReceivedFromOtherUSer){
             if(!obj[r.id]){
-                obj[r.id] = 'a req was sent but did not approved yet'
+                obj[r.id] = 'a req received from the keyNum but did not approved yet'
             }
         }
-        for (let r of reqReceived){
+        for (let r of reqSentToOtherUser){
             if(!obj[r.id]){
-                obj[r.id] = 'a req received but did not approved yet'
+                obj[r.id] = 'a req was sent to the keyNum but did not approved yet'
             }else obj[r.id] = 'friends'
         }
         let friends = []
@@ -156,8 +156,8 @@ class SqlManager {
         res.user = await this.getGeneralData(userId)
         res.sport = await this.getUserSports(userId)
         res.match = await this.getMatch(userId)
-        res.followers = await this.getFollowReq(userId)
-        res.friends = await this.getFriendReq(userId)
+        // res.followers = await this.getFollowReq(userId)
+        // res.friends = await this.getFriendReq(userId)
         res.events = await this.getUserEvents(userId)
         res.Partis = await this.getUserPartis(userId)
         return res
