@@ -55,7 +55,7 @@ const testUser = async function () {
 
 
 // sequelize.query(`SHOW COLUMNS FROM post_parti`).then((res)=>console.log(res[0]))
-sequelize.query(`SELECT * FROM user_user`).then((res)=>console.log(res[0]))
+sequelize.query(`SELECT * FROM user`).then((res)=>console.log(res[0]))
 // sequelize.query(`SELECT * FROM comment WHERE p_id = 6`).then((res)=>console.log(res[0]))
 // sequelize.query(`ALTER TABLE user ADD birthdate BIGINT`).then((res)=>console.log(res[0]))
 

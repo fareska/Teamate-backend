@@ -96,8 +96,8 @@ class SqlManager {
         follower.forEach(f => arr.push(f))
         return arr
     }
-    
-    async getFriendReq (userId){
+
+    async getFriendReq(userId) {
         let query = `SELECT u.id, first, last, image
         FROM user AS u, user_user AS uu
         WHERE uu.su_id = ${userId} AND uu.mu_id = u.id`
@@ -107,31 +107,31 @@ class SqlManager {
         return arr
     }
 
-    async getMatch (userId){
+    async getMatch(userId) {
         let obj = {} //all the keys are user's ids. //
         //if the value is 0, then the user(key) received a req from the main user 
         //if the value is 1, then the user(key) sent a req to the main user 
         //if the value is 2, then they are friends 
         let reqReceivedFromOtherUSer = await this.getFriendReq(userId)
         let reqSentToOtherUser = await this.getFollowReq(userId)
-        for (let r of reqReceivedFromOtherUSer){
-            if(!obj[r.id]){
+        for (let r of reqReceivedFromOtherUSer) {
+            if (!obj[r.id]) {
                 obj[r.id] = 'a req received from the keyNum but did not approved yet'
             }
         }
-        for (let r of reqSentToOtherUser){
-            if(!obj[r.id]){
+        for (let r of reqSentToOtherUser) {
+            if (!obj[r.id]) {
                 obj[r.id] = 'a req was sent to the keyNum but did not approved yet'
-            }else obj[r.id] = 'friends'
+            } else obj[r.id] = 'friends'
         }
         let friends = []
         for (const [key, value] of Object.entries(obj)) {
             friends.push(`${key}: ${value}`);
-          } 
+        }
         return friends
     }
 
-    async getUserEvents(userId){
+    async getUserEvents(userId) {
         let query = `SELECT p.id, date, time, people_num, description, active, address, latitude, longitude, c.city, co.country, f.frequency ,s.sport   
         FROM  post AS p, sport AS s, city AS c, country AS co, frequency AS f
         WHERE p.user_id = ${userId} AND p.sport_id = s.id AND c.id= p.city_id AND co.id=p.country_id AND f.id=p.frequency_id `
@@ -141,7 +141,7 @@ class SqlManager {
         return arr
     }
 
-    async getUserPartis(userId){
+    async getUserPartis(userId) {
         let query = `SELECT user_id, date, time, people_num, description, active, address, latitude, longitude, c.city, co.country, f.frequency ,s.sport   
         FROM  post_parti AS pp, post AS p, sport AS s, city AS c, country AS co, frequency AS f
         WHERE pp.pa_id = ${userId} AND pp.po_id= p.id AND p.sport_id = s.id AND c.id=p.city_id AND co.id=p.country_id AND f.id=p.frequency_id `
@@ -163,7 +163,7 @@ class SqlManager {
         return res
     }
 
-    async isNewReq (mainUserId, subUserId){
+    async isNewReq(mainUserId, subUserId) {
         let query = `SELECT id FROM user_user WHERE mu_id = ${mainUserId} AND su_id =${subUserId} `
         let result = await this.sequelize.query(query)
         return result
@@ -171,37 +171,51 @@ class SqlManager {
 
     async addFriend(mainUserId, subUserId) {
         let check = await this.isNewReq(mainUserId, subUserId)
-        if (!check[0][0]) { 
+        if (!check[0][0]) {
             let query = `INSERT INTO user_user VALUES(null, ${mainUserId}, ${subUserId})`
             let result = await this.sequelize.query(query)
             return result
-         }
+        }
         else return 'already requested'
     }
 
-    async deleteFriend(userId, friendId){
+    async deleteFriend(userId, friendId) {
         let query = `DELETE FROM user_user WHERE (mu_id = ${userId} AND su_id = ${friendId}) OR (su_id = ${userId} AND mu_id = ${friendId})`
         let result = await this.sequelize.query(query)
         return result
     }
 
-    async getAll(table){
+    async deleteSport(userId, sport) {
+        let sportId = await this.isExistS('sport', 'sport', sport)
+        let query = `DELETE FROM user_sport WHERE u_id =${userId} AND s_id = ${sportId}`
+        let result = await this.sequelize.query(query)
+        return result
+    }
+    
+    async addSport(userId, sport) {
+        let sportId = await this.isExistS('sport', 'sport', sport)
+        let query = `INSERT INTO user_sport VALUES(null, ${userId}, ${sportId})`
+        let result = await this.sequelize.query(query)
+        return result
+    }
+
+    async getAll(table) {
         let result = await this.sequelize.query(`SELECT * FROM ${table}`)
         return result[0]
     }
 
-    async getAllColumn(table){
+    async getAllColumn(table) {
         let result = await this.sequelize.query(`SELECT * FROM ${table}`)
         return result[0]
     }
 
-    async updateUserGeneralData(userId, column, value){
-        if (column === 'email'){
+    async updateUserGeneralData(userId, column, value) {
+        if (column === 'email') {
             let checkEmail = await this.isNew(value)
-            if(checkEmail){
+            if (checkEmail) {
                 let result = await this.sequelize.query(`UPDATE user  SET ${column} = '${value}'  WHERE id = ${userId} `)
-                return result[0]                
-            }else return 'email dose exist' 
+                return result[0]
+            } else return 'email dose exist'
         }
         let result = await this.sequelize.query(`UPDATE user  SET ${column} = '${value}'  WHERE id = ${userId} `)
         return result[0]

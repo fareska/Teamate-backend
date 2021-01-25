@@ -90,6 +90,18 @@ router.delete('/user/friends',async function (req, res) {
     res.send(result)
 })
 
+router.delete('/user/delete/sport',async function (req, res) {
+    const { userId, sport } = req.body
+    let result = await sqlManager.deleteSport(userId, sport)
+    res.send(result)
+})
+
+router.post('/user/add/sport',async function (req, res) {
+    const { userId, sport } = req.body
+    let result = await sqlManager.addSport(userId, sport)
+    res.send(result)
+})
+
 
 router.get('/insert/sports', function (req, res) {
 })
