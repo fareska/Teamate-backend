@@ -39,11 +39,12 @@ class SQLManager {
         const checkFrequency = await this.addValueS('frequency', 'frequency', frequency)
         const checkSport = await this.addValueS('sport', 'sport', sport)
         const active = true
+        const remove = 0
 
         const hold = await this.sequelize.query(`INSERT INTO post 
         VALUES (null, ${date}, ${time}, ${people_num}, '${description}',
         ${active}, ${checkCity}, ${checkCountry}, ${checkFrequency},
-        ${checkSport}, ${user_id}, '${address}', ${lat}, ${lon} )`)
+        ${checkSport}, ${user_id}, '${address}', ${lat}, ${lon}, ${remove} )`)
 
         if (hold)
             return "Event has been added successfully!"

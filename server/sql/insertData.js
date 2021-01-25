@@ -48,16 +48,22 @@ const testUser = async function () {
     let gender = 1
     let active = 1
     let sports = ['Boxing', 'Swimming']
-
+    
     sqlManager.addUser(last, first, email, password, mobile, image, gender, active, birthDate, date, city_id, country_id)
 }// testUser()
 /////////////////////////////
 
 
 // sequelize.query(`SHOW COLUMNS FROM post_parti`).then((res)=>console.log(res[0]))
-// sequelize.query(`SELECT * FROM user WHERE id= 1`).then((res)=>console.log(res[0]))
+sequelize.query(`SELECT * FROM post`).then((res)=>console.log(res[0]))
 // sequelize.query(`SELECT * FROM comment WHERE p_id = 6`).then((res)=>console.log(res[0]))
 // sequelize.query(`ALTER TABLE user ADD birthdate BIGINT`).then((res)=>console.log(res[0]))
+
+
+// sequelize.query(`
+// DELETE FROM post
+// `).then((res) => console.log(res))
+
 
 ///friend req (the res shows all the users which got friend req from the main user)--show me the users i sent them follow/add friend
 // sequelize.query(`
@@ -127,10 +133,14 @@ const testUser = async function () {
 // ADD bio VARCHAR(300)
 // `).then((res) => console.log(res))
 
-sequelize.query(`
-DELETE FROM post_parti
-WHERE po_id = 7
-`).then((res) => console.log(res))
+// sequelize.query(`
+// ALTER TABLE post
+// ADD remove BOOLEAN
+// `).then((res) => console.log(res))
+
+// sequelize.query(`
+// DELETE FROM post_parti
+// `).then((res) => console.log(res))
 
 // sequelize.query(`
 // ALTER TABLE user
