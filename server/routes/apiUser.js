@@ -84,8 +84,10 @@ router.put('/user/generalData', async function (req, res) {
 })
 
 
-router.delete('/user/friends', function (req, res) {
-    //receives object with user id and sports  
+router.delete('/user/friends',async function (req, res) {
+    const { userId, friendId } = req.body
+    let result = await sqlManager.deleteFriend(userId, friendId)
+    res.send(result)
 })
 
 

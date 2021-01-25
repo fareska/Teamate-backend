@@ -179,6 +179,12 @@ class SqlManager {
         else return 'already requested'
     }
 
+    async deleteFriend(userId, friendId){
+        let query = `DELETE FROM user_user WHERE (mu_id = ${userId} AND su_id = ${friendId}) OR (su_id = ${userId} AND mu_id = ${friendId})`
+        let result = await this.sequelize.query(query)
+        return result
+    }
+
     async getAll(table){
         let result = await this.sequelize.query(`SELECT * FROM ${table}`)
         return result[0]
