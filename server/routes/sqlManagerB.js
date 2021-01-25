@@ -76,7 +76,8 @@ class SQLManager {
         const hold = await this.sequelize.query(`
         SELECT country, city, frequency, sport, p.id, p.time, p.people_num, p.description, p.date, p.active
         FROM post AS p, country AS co, city AS c, frequency AS f, sport AS sp
-        WHERE p.user_id=${userId} AND p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id;`)
+        WHERE p.user_id=${userId} AND p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id
+        ORDER BY p.date DESC`)
 
         if (hold)
             return hold[0]
@@ -101,7 +102,7 @@ class SQLManager {
         let eventsQuery = `SELECT p.id, p.date, p.time, p.people_num, p.description, p.active, c.city, co.country, f.frequency, sp.sport,user_id, u.first, u.last, u.image, p.address, p.latitude, p.longitude
         FROM post AS p, country AS co, city AS c, frequency AS f, sport AS sp, user AS u
         WHERE p.country_id=co.id AND p.city_id=c.id AND p.frequency_id=f.id AND p.sport_id=sp.id AND p.user_id = u.id
-        ORDER BY p.date ASC `
+        ORDER BY p.date DESC `
         
         let partisQuery = `SELECT pa_id, po_id, u.first, u.last, u.image
         FROM  post_parti AS pp,  user AS u, post as p
