@@ -3,10 +3,10 @@ const router = express.Router()
 const SQLManager = require('./sqlManagerB')
 const sqlManager = new SQLManager()
 
-router.delete('/post/:id', async function (req, res) {
+router.delete('/post/delete', async function (req, res) {
     //receives post id and delete it
-    const { id } = req.params
-    const result = await sqlManager.deleteEvent(id)
+    const { eventId, userId } = req.body
+    const result = await sqlManager.deleteEvent(eventId, userId)
     res.status(200).send(result)
 })
 

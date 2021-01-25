@@ -128,14 +128,23 @@ class SQLManager {
         else return 'Fail!'
     }
 
-    async deleteEvent(id) {
-        const hold = await this.sequelize.query(`
-        DELETE FROM post
-        WHERE id=${id};`)
+    async isUserMadeIt(eventId, userId) {
+        let user_id = await this.sequelize.query(`SELECT user_id FROM post WHERE id= ${eventId}`)
+        console.log(user_id[0][0].user_id);
+        if(user_id[0][0].user_id === userId) { return true }
+        else return false 
+    }
 
-        if (hold)
-            return 'POST DELETED!'
-        else return 'DELETION Fail!'
+    async deleteEvent(eventId, userId) {
+        let check = await this.isUserMadeIt(eventId, userId)  
+        if(check){
+            await this.sequelize.query(`DELETE FROM post_parti WHERE po_id=${eventId}`) 
+            const hold = await this.sequelize.query(`DELETE FROM post WHERE id=${eventId}`)
+            if (hold)
+                return 'POST DELETED!'
+            else return 'DELETION Fail!'
+        }
+        else return 'You are not allowed to delete other users events'
     }
 
     async updateEvent(newInfo) {
