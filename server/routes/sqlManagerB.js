@@ -230,6 +230,7 @@ class SQLManager {
         else "Sorry something went wrong, try again later!"
     }
 
+   
     async deleteComment(commentId, userId) {
         const hold = await this.sequelize.query(`DELETE FROM comment WHERE id= ${commentId} AND u_id=${userId} `)
         if (hold)

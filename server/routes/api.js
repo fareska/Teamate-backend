@@ -75,9 +75,9 @@ router.post('/post/comment', async function (req, res) {
     res.status(200).send(result)
 })
 
-router.delete('/post/comment/:id', async function (req, res) {
-    //add comment to event
-    const result = await sqlManager.deleteComment(req.params.id)
+router.delete('/post/comment/delete', async function (req, res) {
+    const {commentId, userId } = req.body 
+    const result = await sqlManager.deleteComment(commentId, userId)
     res.status(200).send(result)
 })
 
