@@ -108,25 +108,21 @@ class SqlManager {
     }
 
     async getMatch(userId) {
-        let obj = {} //all the keys are user's ids. //
+        let friends = {} //all the keys are user's ids. //
         //if the value is 0, then the user(key) received a req from the main user 
         //if the value is 1, then the user(key) sent a req to the main user 
         //if the value is 2, then they are friends 
         let reqReceivedFromOtherUSer = await this.getFriendReq(userId)
         let reqSentToOtherUser = await this.getFollowReq(userId)
         for (let r of reqReceivedFromOtherUSer) {
-            if (!obj[r.id]) {
-                obj[r.id] = 'a req received from the keyNum but did not approved yet'
+            if (!friends[r.id]) {
+                friends[r.id] = 'a req received from the keyNum but did not approved yet'
             }
         }
         for (let r of reqSentToOtherUser) {
-            if (!obj[r.id]) {
-                obj[r.id] = 'a req was sent to the keyNum but did not approved yet'
-            } else obj[r.id] = 'friends'
-        }
-        let friends = []
-        for (const [key, value] of Object.entries(obj)) {
-            friends.push(`${key}: ${value}`);
+            if (!friends[r.id]) {
+                friends[r.id] = 'a req was sent to the keyNum but did not approved yet'
+            } else friends[r.id] = 'friends'
         }
         return friends
     }
