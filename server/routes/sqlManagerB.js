@@ -217,10 +217,8 @@ class SQLManager {
     }
 
     async getComments(postId){
-        // let result = await this.sequelize.query(`SELECT comment, u_id FROM comment  GROUP BY p_id `)
         let result = await this.sequelize.query(`SELECT * FROM comment WHERE p_id = ${postId} `)
-
-        if(result){ return result}
+        if(result[0]){ return result[0]}
         else return 'something went wrong'
     }
 

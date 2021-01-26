@@ -75,6 +75,12 @@ router.post('/post/comment', async function (req, res) {
     res.status(200).send(result)
 })
 
+router.get('/post/comment/:id', async function (req, res) {
+    
+    const result = await sqlManager.getComments(req.params.id)
+    res.status(200).send(result)
+})
+
 router.delete('/post/comment/delete', async function (req, res) {
     const {commentId, userId } = req.body 
     const result = await sqlManager.deleteComment(commentId, userId)
