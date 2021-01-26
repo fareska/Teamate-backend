@@ -211,7 +211,7 @@ class SqlManager {
             if (checkEmail) {
                 let result = await this.sequelize.query(`UPDATE user  SET ${column} = '${value}'  WHERE id = ${userId} `)
                 return result[0]
-            } else return 'email dose exist'
+            } else return 'Email already exists'
         }
         let result = await this.sequelize.query(`UPDATE user  SET ${column} = '${value}'  WHERE id = ${userId} `)
         return result[0]

@@ -23,14 +23,16 @@ router.post('/user', async function (req, res) {
         let sportsResult = await sqlManager.addUserSports(email, sports)
         res.send(addUserResult)
     }
-    else res.send('Email dose exist')
+    else res.send('Email already exists')
 })
 
 router.get('/user/:id', async function (req, res) {
     let userData = await sqlManager.getUserData(req.params.id)
     // userData.user.date=`${userData.user.date}`
     // userData.user.birthdate=`${userData.user.birthdate}`
-    res.send(userData)
+    if(userData.user)  res.send(userData) 
+    else  res.send('Something went wrong')
+    
 })
 
 router.post('/user/emailPass', async function (req, res) {
@@ -39,7 +41,7 @@ router.post('/user/emailPass', async function (req, res) {
     let userId = await sqlManager.isExistS('user', 'email', email)
     if (userId !== 'newItem') {
         let userPassword = await sqlManager.getPassword(userId)
-        let check = userPassword == password ? true : res.send('Password dose not match')
+        let check = userPassword == password ? true : res.send('Wrong Password!')
         let result = check && await sqlManager.getUserData(userId)
         result.user.id = userId
         // result.user.date=`${result.user.date}`
@@ -47,7 +49,7 @@ router.post('/user/emailPass', async function (req, res) {
         res.send(result)
     }
     else {
-        res.send('Email dose not exist')
+        res.send('Email does not exist!')
     }
 })
 

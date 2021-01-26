@@ -70,8 +70,8 @@ router.delete('/post/delete/participant', async function (req, res) {
 
 router.post('/post/comment', async function (req, res) {
     //add comment to event 
-    const {postId, userId, comment } = req.body
-    const result = await sqlManager.addComment(postId, userId, comment)
+    const {postId, userId, comment, first, last } = req.body
+    const result = await sqlManager.addComment(postId, userId, comment, first, last)
     res.status(200).send(result)
 })
 

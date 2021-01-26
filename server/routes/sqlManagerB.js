@@ -47,7 +47,7 @@ class SQLManager {
         ${checkSport}, ${user_id}, '${address}', ${lat}, ${lon}, ${remove} )`)
 
         if (hold)
-            return "Event has been added successfully!"
+            return "Event has been created successfully!"
         else "Sorry something went wrong, try again later!"
     }
     
@@ -179,8 +179,8 @@ class SQLManager {
         if(eventMaker !== userId){
             if(peopleNum !== partisNum){
                 valid = true
-            }else valid = 'event is full'
-        } else valid = `you can't assign to event you generated`
+            }else valid = 'Event is full'
+        } else valid = `You can't join your own Event!`
 
         return valid
     }
@@ -207,10 +207,10 @@ class SQLManager {
             if(response === 'newItem'){
                 let hold = await this.sequelize.query(`INSERT INTO post_parti VALUES(null, ${postId}, ${userId})`) 
                 if (hold)
-                    return "Person has been added to the event successfully!"
+                    return "You have joined the event successfully!"
                 else "Sorry something went wrong, try again later!"
             }
-            else return 'Request not valid, The user already registered as participant to this event'
+            else return 'You already joined this Event'
 
         } else return validation //'the request is not valid, you either trying to join an event you published or you trying to join a full event '
 
@@ -224,8 +224,8 @@ class SQLManager {
         else return 'something went wrong'
     }
 
-    async addComment(postId, userId, comment) {
-        const hold = await this.sequelize.query(`INSERT INTO comment VALUES(null, ${userId}, ${postId}, '${comment}')`)
+    async addComment(postId, userId, comment, first, last) {
+        const hold = await this.sequelize.query(`INSERT INTO comment VALUES(null, ${userId}, ${postId}, '${comment}', '${first}', '${last}')`)
         if (hold)
             return "Comment has been saved to the event successfully!"
         else "Sorry something went wrong, try again later!"
